@@ -156,3 +156,47 @@ docker run -d -p 80:80 760b7cbba31e
 ![](png/25.png)
 
 ## Part 3. Мини веб-сервер
+#### 3.1 Написать мини сервер на C и FastCgi, который будет возвращать простейшую страничку с надписью Hello World!
+![](png/26.png)
+
+#### 3.2 Запустить написанный мини сервер через spawn-fcgi на порту 8080
+
+Последоватлеьность действий:
+``` 
+docker pull nginx
+docker images
+docker run -d -p 81:81 [IMAGE_ID](760b7cbba31e)
+```
+
+![](png/28.png)
+``` 
+docker cp nginx.conf [CONTAINER ID]:/etc/nginx/
+docker cp server.c [CONTAINER ID]:/home/
+docker exec -it [CONTAINER ID] bash     // чтобы подключиться к контейнеру
+```
+![](png/29.png)
+![](png/30.png)
+
+``` 
+apt-get update
+apt-get install gcc
+apt-get install spawn-fcgi
+apt-get install libfcgi-dev
+gcc *.c -lfcgi
+spawn-fcgi -p 8080 /screenshots/a.out
+nginx -s reload
+```
+![](png/31.png)
+
+#### 3.3 Написать свой nginx.conf, который будет проксировать все запросы с 81 порта на 127.0.0.1:8080 (3.2)
+
+![](png/27.png)
+
+#### 3.4 Проверь, что в браузере по localhost:81 отдается написанная тобой страничка.
+
+![](png/32.png)
+![](png/33.png)
+
+
+
+
