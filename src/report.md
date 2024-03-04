@@ -75,11 +75,84 @@ docker run -p 80:80 - d -p (в фоновом режиме) -p 443:443 760b7cbba
 ``` 
 команда - docker ps
 ```
-![](png/13.png)
 
 ## Part 2. Операции с контейнером
-2.1 Прочитать конфигурационный файл nginx.conf внутри докер контейнера через команду exec
+##### 2.1 Прочитать конфигурационный файл nginx.conf внутри докер контейнера через команду exec
 ``` 
+docker run -d -p 80:80 760b7cbba31e
 команда - docker exec b36553438506 cat /etc/nginx/nginx.conf
 ```
 ![](png/14.png)
+
+##### 2.2 Создать на локальной машине файл nginx.conf
+##### 2.3 Настроить в нем по пути /status отдачу страницы статуса сервера nginx
+
+![](png/15.png)
+
+#### 2.3 Скопировать созданный файл nginx.conf внутрь докер образа через команду docker cp
+```  container_id
+команда - docker cp nginx.conf b36553438506:/etc/nginx/
+```
+![](png/16.png)
+
+
+#### 2.4 Перезапустить nginx внутри докер образа через команду exec
+``` 
+команда - docker exec b36553438506 nginx -s reload
+```
+![](png/17.png)
+
+// пришлось запустить новый контейнер из-за ошибок 
+
+
+#### 2.5 Проверить, что по адресу localhost:80/status отдается страничка со статусом сервера nginx
+![](png/18.png)
+
+
+#### 2.6 Экспортировать контейнер в файл container.tar через команду export
+``` 
+команда - docker export 7eb4f6d7a900 > container.tar
+```
+
+#### 2.7 Остановить контейнер
+``` 
+команда - docker stop magical_moore()
+```
+![](png/19.png)
+
+
+#### 2.8 Удалить образ через docker rmi [image_id|repository], не удаляя перед этим контейнеры
+``` 
+команда - docker rmi 7eb4f6d7a900 -f (image_id)
+```
+![](png/20.png)
+
+#### 2.9 Удалить остановленный контейнер
+``` 
+команда - docker rm magical_moore
+```
+![](png/21.png)
+
+#### 2.10 Импортировать контейнер обратно через команду import
+``` 
+команда - docker import -c 'cmd ["nginx", "-g", "daemon off;"]' -c 'ENTRYPOINT 
+          ["/docker-entrypoint.sh"]' /screenshots/container.tar nginx_imp
+```
+![](png/22.png)
+![](png/23.png)
+
+
+
+#### 2.11 Запустить импортированный контейнер
+``` 
+команда - docker run -d -p 80:80 7adff4325645
+```
+![](png/24.png)
+
+#### 2.12 Проверить, что по адресу localhost:80/status отдается страничка со статусом сервера nginx
+``` 
+команда - curl localhost:80/status
+```
+![](png/25.png)
+
+## Part 3. Мини веб-сервер
