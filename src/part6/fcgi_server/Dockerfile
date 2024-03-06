@@ -3,7 +3,6 @@ FROM nginx:latest
 WORKDIR /home/
 
 # Копирование файлов в контейнер
-COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./server.c /home/server.c
 COPY ./run.sh /home/run.sh
 
