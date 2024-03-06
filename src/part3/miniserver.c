@@ -15,3 +15,7 @@ int main() {
     }
     return 0;
 }
+
+
+//Запуск fcgi сервера на 5000 порту
+// spawn-fcgi -p 5000 -n hello.fcgi
